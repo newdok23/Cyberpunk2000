@@ -1,46 +1,50 @@
 public class Main {
+
     
     class Ant {
 
-        float health;
+        int health;
+        int stamina;
+        boolean alive ;
+        // static final cost ;
+        
 
-        void setHealth(float health) { this.health = health; }
-        float getHealth() { return health ;}
-        }
+        void setStamina( int stamina) {this.stamina = stamina ;}
+        int getStamina() { return stamina ;}
+
+        void setHealth(int health) { this.health = health; }
+        int getHealth() { return health ;}
+    }
 
     class Scout extends Ant { 
-        int stamina;
+        boolean pathfinding;
     
-        void setStamina(int stamina) { this.stamina = stamina; }
-        int getStamina() { return stamina; }
+        void pathfinding(boolean pathfinding) { this.pathfinding = pathfinding; }
+        boolean pathfinding() { return pathfinding; }
     
     } 
 
     class Worker extends Ant { 
-        int stamina;
-
-    
-        void setStamina(int stamina) { this.stamina = stamina; }
-        int getStamina() { return stamina; }
+        
     
     } 
 
      class Warrior extends Ant { 
-        int stamina;
-    
-        void setStamina(int stamina) { this.stamina = stamina; }
-        int getStamina() { return stamina; }
+
     
     } 
 
 
     class Queen extends Ant { 
-        int stamina;
+
+        int eat ;
     
-        void setStamina(int stamina) { this.stamina = stamina; }
-        int getStamina() { return stamina; }
+        void setEat(int eat) { this.eat = eat; }
+        int getEat() { return eat ; }
     
     } 
+
+    class resourcePoint {};
 
     
 
