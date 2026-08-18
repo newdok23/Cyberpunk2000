@@ -1,5 +1,29 @@
 public class Main {
 
+
+    interface Explore {
+
+        findResource() ;
+        leavePheromon() ;
+
+    }
+
+    interface Pathfinding {
+
+        void findpheromon () ;
+    }
+
+    interface Carrier {
+        
+        void carry () ;
+    }
+
+    interface ProduceAnt {
+
+        prodScout () ;
+        prodWorker () ;
+    }
+
     
     class Ant {
 
@@ -26,11 +50,6 @@ public class Main {
 
     class Worker extends Ant { 
         
-    
-    } 
-
-     class Warrior extends Ant { 
-
     
     } 
 
