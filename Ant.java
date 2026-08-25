@@ -6,6 +6,10 @@ public class Ant {
         // static final cost ;
         
 
+        interface void takedamage (ant a) { 
+                a.damage () ;
+        }
+
         void setStamina( int stamina) {this.stamina = stamina ;}
         int getStamina() { return stamina ;}
 

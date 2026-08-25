@@ -1,13 +1,8 @@
 public class Main {
 
-
-
-
     class resourcePoint {};
 
-
 }
-
 
     interface Explore {
 
