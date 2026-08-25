@@ -13,3 +13,4 @@ public class Ant {
         int getHealth() { return health ;}
     
 }
+

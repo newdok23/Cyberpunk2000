@@ -1,3 +1,6 @@
-class Worker {
+class Worker extends Ant{
     
 }
+
+
+ 

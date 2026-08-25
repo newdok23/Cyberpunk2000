@@ -6,3 +6,5 @@ class Queen {
     int getEat() { return eat ; }
 
 }
+
+

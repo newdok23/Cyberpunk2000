@@ -1,2 +1,14 @@
 Project overview: Ant Colony 
 Objective: To make an ant colony simulator that maps how a colony of and would pathfind to a target (food).
+
+
+Main --- Objects + map design
+
+Interfaces & Abstractions for Methods n functions  inside the main 
+
+Superclass Ant. Common variables  : Health , Stamina , Alive 
+
+Classes : Queen ,  Scout , Worker 
+
+
+We should use some generics in the project 
