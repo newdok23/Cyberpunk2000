@@ -4,11 +4,33 @@ Objective: To make an ant colony simulator that maps how a colony of and would p
 
 Main --- Objects + map design
 
+Map  - 2d grid with each cell state as empty , food , pheromon trail or wall
+
 Interfaces & Abstractions for Methods n functions  inside the main 
 
 Superclass Ant. Common variables  : Health , Stamina , Alive 
 
-Classes : Queen ,  Scout , Worker 
+Classes : 
+
+Queen - must produce scout / ant at a cost 
+
+Inherited variable : Health , Stamina , Bool Alive
+
+Unique traits : Eat , 
+
+Scout  - travels and finds a path to resources , leaves pheromons . 
+Scout uses random wandering until it finds food , then leaves pheromones on the way back.
+Thats how real ants work.
+
+
+Inherited variable : Health , Stamina , Bool Alive
+
+Unique traits : Pathfinding , 
+
+Worker  - finds the pheromons left by the scout and follows the trail to find and 
+gather resources 
+
+Inherited variable : Health , Stamina , Bool Alive
 
 
 We should use some generics in the project 

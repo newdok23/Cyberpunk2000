@@ -1,6 +1,7 @@
 public class Main {
 
     class resourcePoint {};
+    
 
 }
 
@@ -9,6 +10,10 @@ public class Main {
         findResource() ;
         leavePheromon() ;
 
+    }
+
+    abstract boolean resourceExist { 
+        if resource <= 0  ( return 0 );
     }
 
     interface Pathfinding {
