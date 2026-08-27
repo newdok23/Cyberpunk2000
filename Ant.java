@@ -10,11 +10,17 @@ public class Ant {
                 a.damage () ;
         }
 
-        void setStamina( int stamina) {this.stamina = stamina ;}
-        int getStamina() { return stamina ;}
 
-        void setHealth(int health) { this.health = health; }
-        int getHealth() { return health ;}
-    
+        interface AntBehaviour {
+
+                void setStamina(int stamina);
+                int getStamina();
+                void setHealth(int health);
+                int getHealth();
+                void die(boolean alive);
+                void move(float coordinates);
+                float getCoordinates();
+
+        }
 }
 
