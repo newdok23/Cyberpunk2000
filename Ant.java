@@ -1,26 +1,34 @@
-public class Ant {
+import java.awt.Point;
+
+public class Ant implements AntBehaviour {
 
          int health;
          int stamina;
         boolean alive ;
+        Point position;
         // static final cost ;
-        
 
-        interface void takedamage (ant a) { 
-                a.damage () ;
+        //constructor 
+        public Ant(int health , int stamina) {
+                this.health = health;
+                this.stamina = stamina;
+                this.alive = true;
+        }
+
+        public void setHealth(int health) {this.health = health;}
+        public int getHealth() { return health;}
+        public void setStamina(int stamina) {this.stamina = stamina;}
+        public int getStamina() {return stamina;}
+        public void die() {alive = false ; health = 0;}
+        public boolean isAlive() { return alive;}
+        public void move(Point destination) { this.position = destination;}
+        public Point getPosition() { return position;}
+        public void takeDamage(int amount) {
+                this.health -= amount;
+                if(this.health <= 0) die();
         }
 
 
-        interface AntBehaviour {
 
-                void setStamina(int stamina);
-                int getStamina();
-                void setHealth(int health);
-                int getHealth();
-                void die(boolean alive);
-                void move(float coordinates);
-                float getCoordinates();
-
-        }
 }
 
