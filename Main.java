@@ -60,6 +60,18 @@ public class Main {
             }
             scoutMoveTimer = 0 ;
         }
+
+        // Pheromone decay; for each cell in the pheromone grid, decay the pheromone strength and clear it if it falls below a threshold
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (pheromoneGrid[x][y] != null) {
+                    pheromoneGrid[x][y].decay();
+                    if (pheromoneGrid[x][y].getStrength() < 0.05f) {
+                        pheromoneGrid[x][y] = null; // Clear when faded
+                    }
+                }
+            }
+        }
     }
 
 
@@ -131,7 +143,7 @@ public class Main {
 
     
 
-    static void drawGrid(Graphics g) {
+static void drawGrid(Graphics g) {
         for (int x = 0; x < WIDTH; x++){
             for (int y = 0 ; y < HEIGHT; y++){
                 switch (grid[x][y]){
@@ -143,29 +155,46 @@ public class Main {
                     default:        g.setColor(Color.BLACK);    break;
                     
                 }
-                g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                 g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            }
-
-               
                 
-               
+                g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                
+                // check if pheromon is there
+                if (pheromoneGrid[x][y] != null) {
+                    if (grid[x][y] == CellType.EMPTY) { // only draw on empty spaces
+                        float s = pheromoneGrid[x][y].getStrength();
+                        
+                        // figure out the transparency
+                        int trans = (int)(s * 180);
+                        if (trans > 255) {
+                            trans = 255;
+                        }
+                        if (trans < 0) {
+                            trans = 0;
+                        }
+                        
+                        Color pheroColor = new Color(0, 255, 255, trans);
+                        g.setColor(pheroColor);
+                        g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    }
+                }
+
+                g.setColor(Color.DARK_GRAY);
+                g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            }
         }
 
         g.setColor(Color.GREEN);
-            for (Scout scout : scouts) {
-        Point p = scout.getPosition();
-        g.fillOval(p.x * CELL_SIZE, p.y * CELL_SIZE, CELL_SIZE , CELL_SIZE);
+        for (Scout scout : scouts) {
+            Point p = scout.getPosition();
+            g.fillOval(p.x * CELL_SIZE, p.y * CELL_SIZE, CELL_SIZE , CELL_SIZE);
+        }
+
+        g.setColor(Color.BLUE);
+        for (Scout scout : scouts) {
+            Point p = scout.getPosition();
+            g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE + 5, CELL_SIZE - 10, CELL_SIZE - 10);
+        }
     }
-
-
-       g.setColor(Color.BLUE);
-    for (Scout scout : scouts) {
-        Point p = scout.getPosition();
-        g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE + 5, CELL_SIZE - 10, CELL_SIZE - 10);
-    }
-
- }
  
  
 
