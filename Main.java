@@ -44,6 +44,17 @@ public class Main {
             respawnTimer = 0 ;
         }
 
+        // counting pheromones to debug an error with workers not appearing
+
+        int pheromoneCount = 0;
+        for(int x = 0; x < WIDTH; x++){
+            for ( int y = 0; y <HEIGHT; y++){
+                if(pheromoneGrid[x][y] != null)
+                    pheromoneCount++;
+            }
+        }
+        System.out.println("Pheromones: " + pheromoneCount);
+
         scoutspawnTimer++;
         if(scoutspawnTimer >= scoutSPAWN_RATE && scouts.size() < MAX_SCOUTS) {
             Scout scout = queen.prodScout();
