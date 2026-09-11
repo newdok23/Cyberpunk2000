@@ -64,6 +64,16 @@ public class Main {
             }
             scoutMoveTimer = 0 ;
         }
+
+        workerMoveTimer++;
+        if (workerMoveTimer >= WORKER_MOVE_RATE) {
+            for (Worker worker: workers) {
+                Point p = worker.getPosition();
+                worker.detectPheromones(p.x, p.y);
+                worker.followTrail();
+            }
+            workerMoveTimer = 0;
+        }
     }
 
 
@@ -169,6 +179,12 @@ public class Main {
         g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE + 5, CELL_SIZE - 10, CELL_SIZE - 10);
     }
 
+    g.setColor(Color.ORANGE);
+    for (Worker worker : workers)
+ {
+    Point p = worker.getPosition();
+    g.fillRect(p.x * CELL_SIZE + 5, p.y *CELL_SIZE +5, CELL_SIZE -10, CELL_SIZE-10);
+    }
  }
  
  
