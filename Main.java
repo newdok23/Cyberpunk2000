@@ -55,6 +55,13 @@ public class Main {
         }
         System.out.println("Pheromones: " + pheromoneCount);
 
+        // debug for workers update
+        for (Worker worker : workers) {
+            Point p = worker.getPosition();
+            System.out.println("Worker at: " + p.x + ", " + p.y);
+        }
+
+
         scoutspawnTimer++;
         if(scoutspawnTimer >= scoutSPAWN_RATE && scouts.size() < MAX_SCOUTS) {
             Scout scout = queen.prodScout();
@@ -157,6 +164,9 @@ public class Main {
     
 
     static void drawGrid(Graphics g) {
+
+
+
         for (int x = 0; x < WIDTH; x++){
             for (int y = 0 ; y < HEIGHT; y++){
                 switch (grid[x][y]){
@@ -171,9 +181,6 @@ public class Main {
                 g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                  g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
-
-               
-                
                
         }
 
@@ -191,11 +198,11 @@ public class Main {
     }
 
     g.setColor(Color.ORANGE);
-    for (Worker worker : workers)
- {
+    for (Worker worker : workers) {
     Point p = worker.getPosition();
     g.fillRect(p.x * CELL_SIZE + 5, p.y *CELL_SIZE +5, CELL_SIZE -10, CELL_SIZE-10);
     }
+
  }
  
  

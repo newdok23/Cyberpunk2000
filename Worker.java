@@ -89,6 +89,7 @@ class Worker extends Ant{
     }
 
     if(strongest != null) {
+        this.position = strongest.getPosition(); //; have to update Wokrers own position this was causing bug
         move(strongest.getPosition());
     }
 
