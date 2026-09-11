@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Point;
+
+private Point position;
 
 class Worker extends Ant{
     /*1. Worker needs to detect pheromones nearby
@@ -15,14 +18,22 @@ class Worker extends Ant{
     */
     
     List<Pheromone<Float>> trail = new ArrayList<>();
+   
     
+    private Point position;
 
     public Worker (int health, int stamina) {
        super(health,stamina);
+       this.position = new Point(Main.WIDTH / 2, Main.HEIGHT /2);
        this.followingTrail = false;
        this.carryingFood = false;
        this.foodCarried = 0 ;
     }
+
+    public Point getPosition() { return position;}
+
+
+
 // Should scan the surrounding 8 cells for pheromones 
 // Use loop to look through neighbouring cells and add pheromones from the trail list
 // loop through pheromoneGrid
