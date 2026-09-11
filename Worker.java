@@ -1,6 +1,7 @@
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 
@@ -107,6 +108,22 @@ class Worker extends Ant{
 
     if(strongest != null) {
        moveTowards(strongest.getPosition()); //use the method
+       //when no pheromone trail is left nearby , workers should find another path randomly
+    } else {
+        Random random = new Random();
+        int dx = random.nextInt(3) -1;
+        int dy = random.nextInt(3) -1;
+        int newX = position.x+dx;
+        int newY = position.y+dy;
+                if(newX >= 0 && newX < Main.WIDTH && newY >= 0 && newY < Main.HEIGHT) {
+                    position = new Point(newX , newY);
+                    if (Main.grid[newX][newY] == Main.CellType.FOOD) {
+                        Main.grid[newX][newY] = Main.CellType.EMPTY;
+                        Main.pheromoneGrid[newX][newY] = null;
+                        pickUpFood(1);
+
+                    }
+                }
     }
 
 }
