@@ -70,6 +70,17 @@ public class Main {
                 scoutspawnTimer = 0;
             }
         }
+
+        scoutspawnTimer++;
+        if(scoutspawnTimer >= WORKER_SPAWN_RATE && workers.size() < MAX_WORKERS) {
+            Worker worker = queen.prodWorker();
+            if (worker != null) {
+                workers.add(worker);
+                scoutspawnTimer = 0;
+            }
+        }
+
+
         
         scoutMoveTimer++;
         if (scoutMoveTimer >= SCOUT_MOVE_RATE) {
@@ -205,17 +216,13 @@ public class Main {
         g.setColor(Color.GREEN);
             for (Scout scout : scouts) {
         Point p = scout.getPosition();
-        g.fillOval(p.x * CELL_SIZE, p.y * CELL_SIZE, CELL_SIZE , CELL_SIZE);
+        g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE +5 , CELL_SIZE -10, CELL_SIZE -10);
     }
 
 
-       g.setColor(Color.BLUE);
-    for (Scout scout : scouts) {
-        Point p = scout.getPosition();
-        g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE + 5, CELL_SIZE - 10, CELL_SIZE - 10);
-    }
+   
 
-    g.setColor(Color.ORANGE);
+    g.setColor(Color.BLUE);
     for (Worker worker : workers) {
     Point p = worker.getPosition();
     g.fillRect(p.x * CELL_SIZE + 5, p.y *CELL_SIZE +5, CELL_SIZE -10, CELL_SIZE-10);
