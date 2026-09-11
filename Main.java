@@ -85,14 +85,32 @@ public class Main {
 
         workerMoveTimer++;
         if (workerMoveTimer >= WORKER_MOVE_RATE) {
-            for (Worker worker: workers) {
+           for (Worker worker : workers) {
+            if( worker.isCarryingFood()) {
+                worker.returnToColony();
+            } else {
                 Point p = worker.getPosition();
                 worker.detectPheromones(p.x, p.y);
                 worker.followTrail();
+           }
+    }
+    workerMoveTimer = 0;
+    }
+
+
+    // Pheromone needs to decay otherwise ants keep going to same place
+
+    for(int x = 0; x < WIDTH ; x++) {
+        for(int y = 0; y < HEIGHT; y++) {
+            if(pheromoneGrid[x][y] != null){
+                pheromoneGrid[x][y].decay();
+                if(pheromoneGrid[x][y].getStrength().floatValue() < 0.01f){
+                    pheromoneGrid[x][y] = null;
+                }
             }
-            workerMoveTimer = 0;
         }
     }
+}
 
 
     static int countFood() {

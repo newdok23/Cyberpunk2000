@@ -82,17 +82,27 @@ class Worker extends Ant{
     public void followTrail(){
 
     Pheromone<Float> strongest = null;
+    int colonyX = Main.WIDTH /2 ;
+    int colonyY = Main.HEIGHT /2 ;
+
     for (Pheromone<Float> p : trail) {
+        if (p.getPosition().equals(position)) continue;
+
+
+    double currentDist = position.distance(colonyX, colonyY);
+    double pDist = p.getPosition().distance(colonyX, colonyY);
+    if(pDist <= currentDist) continue;
+
 
     //Once worker reaches a pheromone position it should ignore that pheromone and look for the next one. We need 
     // to find the strongest pheromone that is not at the worker's current position
-        if(p.getPosition().equals(position)) continue;
+     //   if(p.getPosition().equals(position)) continue;
 
         if (strongest == null || p.getStrength() > strongest.getStrength()) {
             strongest = p;
         }
     }
-
+    
 
 
     if(strongest != null) {
@@ -101,7 +111,25 @@ class Worker extends Ant{
 
 }
 
+public void returnToColony() {
+    int colonyX = Main.WIDTH/2;
+    int colonyY = Main.HEIGHT/2;
+    int dx = Integer.compare(colonyX , position.x);
+    int dy = Integer.compare(colonyY, position.y);
+    int newX = position.x + dx;
+    int newY = position.y + dy;
+    position = new Point(newX, newY);
+
+
+    if ( newX == colonyX && newY == colonyY) {
+        carryingFood = false;
+        foodCarried = 0;
+        System.out.println("Worker delivered food to colony!");
+    }
+} 
+
  public void moveTowards(Point target) {
+        
         int dx = Integer.compare(target.x , position.x);
         int dy = Integer.compare(target.y, position.y);
         int newX = position.x + dx;
@@ -113,7 +141,10 @@ class Worker extends Ant{
 
                 if(Main.grid[newX][newY] == Main.CellType.FOOD) {
                     Main.grid[newX][newY] = Main.CellType.EMPTY;
+                    Main.pheromoneGrid[newX][newY] = null;
                     pickUpFood(1);
+                    //debug line 
+                    System.out.println("Worker picked up food! carryingFood = " +carryingFood);
                 }
             }
     }
