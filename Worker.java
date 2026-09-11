@@ -1,8 +1,8 @@
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Point;
 
-private Point position;
+
 
 class Worker extends Ant{
     /*1. Worker needs to detect pheromones nearby
@@ -41,7 +41,7 @@ class Worker extends Ant{
     public void detectPheromones(int x, int y) { 
     trail.clear() ;
 
-    for (int dx = -1; d <= 1; dx++) {
+    for (int dx = -1; dx <= 1; dx++) {
         for (int dy = -1; dy <= 1; dy++) {
             int nx = x+dx;
             int ny = y+dy;
