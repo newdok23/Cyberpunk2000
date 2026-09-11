@@ -19,6 +19,12 @@ public class Main {
     static int scoutMoveTimer = 0 ;
     static final int SCOUT_MOVE_RATE = 2; // move every 3 ticks
 
+    static int workerspawnTimer = 0;
+    static final int workerSPAWN_RATE = 30;
+    static final int MAX_WORKERS = 2;
+    static int workerMoveTimer = 0;
+    static final int WORKER_MOVE_RATE = 2;
+
 
     static Queen queen;
     static List<Scout> scouts = new ArrayList<>();
@@ -59,6 +65,27 @@ public class Main {
                 }
             }
             scoutMoveTimer = 0 ;
+        }
+
+        workerspawnTimer++;
+        if(workerspawnTimer >= workerSPAWN_RATE && workers.size() < MAX_WORKERS) {
+            Worker worker = queen.prodWorker();
+            if (worker != null) {
+                workers.add(worker);
+                workerspawnTimer = 0;
+            }
+        }
+
+        workerMoveTimer++;
+        if (workerMoveTimer >= WORKER_MOVE_RATE) {
+            for (Worker worker : workers) {
+                if (worker.isPathfinding()) {
+                    worker.returnToColony(WIDTH, HEIGHT);
+                } else {
+                    worker.followTrail(WIDTH, HEIGHT);
+                }
+            }
+            workerMoveTimer = 0;
         }
     }
 
@@ -164,6 +191,13 @@ public class Main {
         Point p = scout.getPosition();
         g.fillOval(p.x * CELL_SIZE + 5, p.y * CELL_SIZE + 5, CELL_SIZE - 10, CELL_SIZE - 10);
     }
+
+            g.setColor(Color.RED);
+            for (Worker worker : workers) {
+        Point o = worker.getPosition();
+        g.fillOval(o.x * CELL_SIZE, o.y * CELL_SIZE, CELL_SIZE , CELL_SIZE);
+    }
+
 
  }
  
