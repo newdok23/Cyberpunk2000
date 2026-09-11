@@ -18,7 +18,11 @@ public class Main {
     static final int RESPAWN_RATE = 50;// so every 50 ticks
     static int scoutMoveTimer = 0 ;
     static final int SCOUT_MOVE_RATE = 2; // move every 3 ticks
-
+    static int workerMoveTimer = 0 ;
+    static final int WORKER_MOVE_RATE = 4;
+    static final int MAX_WORKERS = 5;
+    static int workerSpawnTimer = 0;
+    static final int WORKER_SPAWN_RATE = 40;
 
     static Queen queen;
     static List<Scout> scouts = new ArrayList<>();
@@ -190,6 +194,9 @@ public class Main {
     scouts.add(new Scout(100, 100));
     scouts.add(new Scout(100, 100));
     scouts.add(new Scout(100, 100));
+
+    workers.add(new Worker(100, 100));
+    workers.add(new Worker(100, 100));
 
  
 
