@@ -23,6 +23,26 @@ class Worker extends Ant{
        this.carryingFood = false;
        this.foodCarried = 0 ;
     }
+// Should scan the surrounding 8 cells for pheromones 
+// Use loop to look through neighbouring cells and add pheromones from the trail list
+// loop through pheromoneGrid
+
+    public void detectPheromones(int x, int y) { 
+    trail.clear() ;
+
+    for (int dx = -1; d <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            int nx = x+dx;
+            int ny = y+dy;
+
+            if(nx>=0    &&  nx<Main.WIDTH   &&  ny>=0   &&ny<Main.HEIGHT){
+                if(Main.pheromoneGrid[nx][ny] != null){
+                    trail.add(Main.pheromoneGrid[nx][ny]);
+                }
+            }
+        }
+    }
+    }
 
     public void setFollowingTrail(boolean followingTrail) {
         this.followingTrail = followingTrail;
