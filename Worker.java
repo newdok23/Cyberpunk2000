@@ -83,17 +83,41 @@ class Worker extends Ant{
 
     Pheromone<Float> strongest = null;
     for (Pheromone<Float> p : trail) {
+
+    //Once worker reaches a pheromone position it should ignore that pheromone and look for the next one. We need 
+    // to find the strongest pheromone that is not at the worker's current position
+        if(p.getPosition().equals(position)) continue;
+
         if (strongest == null || p.getStrength() > strongest.getStrength()) {
             strongest = p;
         }
     }
 
+
+
     if(strongest != null) {
-        this.position = strongest.getPosition(); //; have to update Wokrers own position this was causing bug
-        move(strongest.getPosition());
+       moveTowards(strongest.getPosition()); //use the method
     }
 
 }
+
+ public void moveTowards(Point target) {
+        int dx = Integer.compare(target.x , position.x);
+        int dy = Integer.compare(target.y, position.y);
+        int newX = position.x + dx;
+        int newY = position.y + dy;
+        
+            if (newX >= 0 && newX < Main.WIDTH && newY >= 0 && newY < Main.HEIGHT) {
+                this.position = new Point(newX, newY);
+                System.out.println("Worker moving to: " + newX +" ," + newY);
+
+                if(Main.grid[newX][newY] == Main.CellType.FOOD) {
+                    Main.grid[newX][newY] = Main.CellType.EMPTY;
+                    pickUpFood(1);
+                }
+            }
+    }
+    
 
 
 
