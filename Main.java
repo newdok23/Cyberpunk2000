@@ -23,7 +23,9 @@ static int ticks_since_ant_came_back = 0; // timer for queen to assume ant is de
 //queen
 static final int workerSPAWN_RATE = 45; // slightly slower than scouts
 static final int MAX_WORKERS = 5;
-
+static int noScoutTimer = 0;
+static int noWorkerTimer = 0;
+static final int PANIC_LIMIT = 300; // ticks before she assumes something died
 
 
 static Queen queen;

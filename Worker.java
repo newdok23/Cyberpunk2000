@@ -70,7 +70,7 @@ class Worker extends Ant{
             } 
             catch (ArrayIndexOutOfBoundsException e) {
                 // try/catch requirement
-                System.out.println("worker at edge of map");
+                //System.out.println("worker at edge of map");
             }
         }
         
