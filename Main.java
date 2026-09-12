@@ -16,7 +16,9 @@ static final int TOTAL_FOOD = 10;
 static int respawnTimer = 0 ;
 static final int RESPAWN_RATE = 50;// so every 50 ticks
 static int scoutMoveTimer = 0 ;
+static int workerMoveTimer = 0;
 static final int SCOUT_MOVE_RATE = 2; // move every 3 ticks
+static final int WORKER_MOVE_RATE = 1;
 static int ticks_since_ant_came_back = 0; // timer for queen to assume ant is dead
 //queen
 static final int workerSPAWN_RATE = 45; // slightly slower than scouts
@@ -79,31 +81,35 @@ static void update() {
     }
 
     // move workers
-    for (Worker w : workers) {
-        if (w.isCarryingFood()) {
-            // clunky math to walk back to center
-            int dx = Integer.compare(WIDTH / 2, w.getPosition().x);
-            int dy = Integer.compare(HEIGHT / 2, w.getPosition().y);
-            w.getPosition().translate(dx, dy);
-            
-            if (w.getPosition().x == WIDTH/2 && w.getPosition().y == HEIGHT/2) {
-                ticks_since_ant_came_back = 0; // worker came back!
-                try {
-                    w.dropFood();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+    workerMoveTimer++;
+    if (workerMoveTimer >= WORKER_MOVE_RATE) {
+        for (Worker w : workers) {
+            if (w.isCarryingFood()) {
+                // clunky math to walk back to center
+                int dx = Integer.compare(WIDTH / 2, w.getPosition().x);
+                int dy = Integer.compare(HEIGHT / 2, w.getPosition().y);
+                w.getPosition().translate(dx, dy);
+                
+                if (w.getPosition().x == WIDTH/2 && w.getPosition().y == HEIGHT/2) {
+                    ticks_since_ant_came_back = 0; // worker came back!
+                    try {
+                        w.dropFood();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            } else {
+                w.followTrail();
+                
+                // grab food if standing on it
+                if (grid[w.getPosition().x][w.getPosition().y] == CellType.FOOD) {
+                    w.pickUpFood(1);
+                    grid[w.getPosition().x][w.getPosition().y] = CellType.EMPTY;
                 }
             }
-        } else {
-            w.followTrail();
-            
-            // grab food if standing on it
-            if (grid[w.getPosition().x][w.getPosition().y] == CellType.FOOD) {
-                w.pickUpFood(1);
-                grid[w.getPosition().x][w.getPosition().y] = CellType.EMPTY;
             }
+        workerMoveTimer = 0;
         }
-    }
     
     // for each cell in the pheromone grid, decay the pheromone strength and clear it if it falls below a threshold
     for (int x = 0; x < WIDTH; x++) {
@@ -132,7 +138,6 @@ static int countFood() {
 
 
 static Random random = new Random() ;
-
 static void respawnFood() { 
     if (countFood() >= TOTAL_FOOD) return; // stop food from spawning if it exceeds counter
 
@@ -253,31 +258,33 @@ static void drawGrid(Graphics g) {
 
 static void initGrid () {
 
-//empty cell
-for (int x = 0; x < WIDTH; x++) {
-    for (int y = 0; y < HEIGHT; y++) {
-        grid[x][y] = CellType.EMPTY;
+    //empty cell
+    for (int x = 0; x < WIDTH; x++) {
+        for (int y = 0; y < HEIGHT; y++) {
+            grid[x][y] = CellType.EMPTY;
+        }
     }
-}
-// Spawn Queen
-queen = new Queen(100,100);
-grid[WIDTH / 2][HEIGHT / 2] = CellType.QUEEN;
-// Spawn Scouts
-scouts.add(new Scout(100, 100));
-scouts.add(new Scout(100, 100));
-scouts.add(new Scout(100, 100));
+    // Spawn Queen
+    queen = new Queen(100,100);
+    grid[WIDTH / 2][HEIGHT / 2] = CellType.QUEEN;
+    // Spawn Scouts
+    scouts.add(new Scout(100, 100));
+    scouts.add(new Scout(100, 100));
+    scouts.add(new Scout(100, 100));
 
-// scatter food 
-Random random = new Random();
-int foodPlaced = 0;
-while (foodPlaced < 10){
-    int x = random.nextInt(WIDTH);
-    int y = random.nextInt(HEIGHT);
-    if (grid[x][y] == CellType.EMPTY) {
-        grid[x][y] = CellType.FOOD;
-        foodPlaced++;
+    // scatter food 
+    Random random = new Random();
+    int foodPlaced = 0;
+    while (foodPlaced < 10){
+        int x = random.nextInt(WIDTH);
+        int y = random.nextInt(HEIGHT);
+        if (grid[x][y] == CellType.EMPTY) {
+            grid[x][y] = CellType.FOOD;
+            foodPlaced++;
+        }
     }
 }
-}
+
+
 
 }
