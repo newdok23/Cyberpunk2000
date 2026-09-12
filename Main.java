@@ -19,13 +19,11 @@ static int scoutMoveTimer = 0 ;
 static int workerMoveTimer = 0;
 static final int SCOUT_MOVE_RATE = 2; // move every 3 ticks
 static final int WORKER_MOVE_RATE = 1;
-static int ticks_since_ant_came_back = 0; // timer for queen to assume ant is dead
+
 //queen
 static final int workerSPAWN_RATE = 45; // slightly slower than scouts
 static final int MAX_WORKERS = 5;
-static int noScoutTimer = 0;
-static int noWorkerTimer = 0;
-static final int PANIC_LIMIT = 300; // ticks before she assumes something died
+
 
 
 static Queen queen;
@@ -38,80 +36,39 @@ enum CellType {
     EMPTY , FOOD , WALL , COLONY , QUEEN
 }
 
+static boolean stopGame = false;
+
 static void update() {
+    if (stopGame) return; // if game stop is true, dont update anything
+
+
     respawnTimer++;
     if (respawnTimer >= RESPAWN_RATE){
         respawnFood();
         respawnTimer = 0 ;
     }
 
-    // add to the panic timer
-    ticks_since_ant_came_back++;
-    if (ticks_since_ant_came_back > 300) {
-        // queen makes a scout because she thinks they all died
-        Scout emergency_scout = queen.prodScout();
-        if (emergency_scout != null) {
-            scouts.add(emergency_scout);
-            ticks_since_ant_came_back = 0; // reset
-        }
-    }
-
-    // MOVE COUT
-    scoutMoveTimer++;
+   scoutMoveTimer++;
+    boolean moveScoutsNow = false;
     if (scoutMoveTimer >= SCOUT_MOVE_RATE) {
-        for (Scout scout : scouts) {
-            if (scout.isPathfinding()) {
-                scout.returnToColony(WIDTH, HEIGHT);
-                
-                // check if scout got to the center
-                if (scout.getPosition().x == WIDTH / 2) {
-                    if (scout.getPosition().y == HEIGHT / 2) { // nested if 
-                        ticks_since_ant_came_back = 0; // reset
-                        // make a worker to go get the food
-                        Worker new_worker_ant = queen.prodWorker();
-                        if (new_worker_ant != null) {
-                            workers.add(new_worker_ant);
-                        }
-                    }
-                }
-                
-            }else {
-                scout.wander(WIDTH, HEIGHT);
-            }
-        }
-        scoutMoveTimer = 0 ;
+        moveScoutsNow = true;
+        scoutMoveTimer = 0;
     }
 
-    // move workers
     workerMoveTimer++;
+    boolean moveWorkersNow = false;
     if (workerMoveTimer >= WORKER_MOVE_RATE) {
-        for (Worker w : workers) {
-            if (w.isCarryingFood()) {
-                // clunky math to walk back to center
-                int dx = Integer.compare(WIDTH / 2, w.getPosition().x);
-                int dy = Integer.compare(HEIGHT / 2, w.getPosition().y);
-                w.getPosition().translate(dx, dy);
-                
-                if (w.getPosition().x == WIDTH/2 && w.getPosition().y == HEIGHT/2) {
-                    ticks_since_ant_came_back = 0; // worker came back!
-                    try {
-                        w.dropFood();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            } else {
-                w.followTrail();
-                
-                // grab food if standing on it
-                if (grid[w.getPosition().x][w.getPosition().y] == CellType.FOOD) {
-                    w.pickUpFood(1);
-                    grid[w.getPosition().x][w.getPosition().y] = CellType.EMPTY;
-                }
-            }
-            }
+        moveWorkersNow = true;
         workerMoveTimer = 0;
-        }
+    }
+
+    try {
+        Queen.queenBrain(queen, scouts, workers, grid, WIDTH, HEIGHT, moveScoutsNow, moveWorkersNow);
+    } catch (QueenDeadException e) {
+        System.out.println("GAME OVER: " + e.getMessage());
+        stopGame = true;
+        return; // no point decaying pheromones etc, the game is over
+    }
     
     // for each cell in the pheromone grid, decay the pheromone strength and clear it if it falls below a threshold
     for (int x = 0; x < WIDTH; x++) {
@@ -172,6 +129,9 @@ public static void main(String[] args) {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             drawGrid(g);
+            if (stopGame) {
+                drawGameOverText(g);
+            }
         }
     };
 
@@ -287,6 +247,18 @@ static void initGrid () {
     }
 }
 
+
+// simulation stop text draw
+static void drawGameOverText(Graphics g) {
+    String msg = "QUEEN DEAD";
+    g.setFont(new Font("Arial", Font.BOLD, 67));
+    FontMetrics fm = g.getFontMetrics();
+    int textWidth = fm.stringWidth(msg);
+    int x = (WIDTH * CELL_SIZE - textWidth) / 2;
+    int y = (HEIGHT * CELL_SIZE) / 2;
+    g.setColor(Color.RED);
+    g.drawString(msg, x, y);
+}
 
 
 }

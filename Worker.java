@@ -1,8 +1,10 @@
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class Worker extends Ant{
+    private Random random;
     /*1. Worker needs to detect pheromones nearby
     2. Follow the strongest pheromone trail
     3. Pick up food when it reaches the source
@@ -20,6 +22,7 @@ class Worker extends Ant{
 
     public Worker (int health, int stamina) {
        super(health,stamina);
+       this.random = new Random();
        this.position = new Point(10, 10); // Spawns the worker at the center colony
        this.followingTrail = false;
        this.carryingFood = false;
@@ -76,16 +79,7 @@ class Worker extends Ant{
         
         // anti-stuck code
         if (nextX == cx && nextY == cy) {
-            java.util.Random r = new java.util.Random();
-            nextX = cx + r.nextInt(3) - 1; 
-            nextY = cy + r.nextInt(3) - 1; 
-            
-            if (nextX < 0) nextX = 0;
-
-            if (nextX >= Main.WIDTH) nextX = Main.WIDTH -1;
-            
-            if (nextY < 0) nextY = 0;
-            if (nextY >= Main.HEIGHT) nextY = Main.HEIGHT -1;
+            wander(20,20);
         }
         
         // last moven spot
@@ -95,7 +89,21 @@ class Worker extends Ant{
         this.position.setLocation(nextX, nextY);
     }
 
+  public void wander(int gridWidth, int gridHeight) {
+        // Pick a random direction (-1, 0, or 1) for x and y
+        int dx = random.nextInt(3) - 1;
+        int dy = random.nextInt(3) - 1;
 
+        int newX = position.x + dx;
+        int newY = position.y + dy;
+
+        //Boundary check for wander 
+        if (newX < 0 || newX >= gridWidth || newY < 0 || newY >= gridHeight) return;
+        
+        // new pos
+        this.position.setLocation(newX, newY);
+  }
+       
 
 public void dropFood() throws Exception {
         if (this.carryingFood == false) {
