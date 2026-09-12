@@ -10,6 +10,9 @@ class Worker extends Ant{
     boolean followingTrail;
     boolean carryingFood;
     int foodCarried;
+
+    int lastX = -1;
+    int lastY = -1;
     
     //pheremone trail lists
     List<Pheromone<Float>> trail = new ArrayList<>();
@@ -36,14 +39,13 @@ class Worker extends Ant{
         this.foodCarried = amount;
         this.carryingFood = true;
     }
-public void followTrail() { 
+    public void followTrail() { 
         int cx = position.x;
         int cy = position.y;
 
         int nextX = cx;
         int nextY = cy;
-        
-        float best = 999.0f; // MUST be outside the loop!
+        float best = 999.0f; // look for lowest
 
         int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
         
@@ -51,6 +53,10 @@ public void followTrail() {
             try {
                 int checkX = cx + dirs[i][0];
                 int checkY = cy + dirs[i][1];
+                //if this tile isnt the same as the last one we stood on. 
+                if (checkX == lastX && checkY == lastY) {
+                    continue; 
+                }
                 
                 if (Main.pheromoneGrid[checkX][checkY] != null) {
                     //generic type requirement
@@ -61,17 +67,31 @@ public void followTrail() {
                         nextY = checkY;
                     }
                 }
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } 
+            catch (ArrayIndexOutOfBoundsException e) {
                 // try/catch requirement
                 System.out.println("worker at edge of map");
             }
         }
         
-        // dirty bandaid: if ant is stuck and didn't move, just force it to step right
+        // anti-stuck code
         if (nextX == cx && nextY == cy) {
-            nextX = cx + 1; 
+            java.util.Random r = new java.util.Random();
+            nextX = cx + r.nextInt(3) - 1; 
+            nextY = cy + r.nextInt(3) - 1; 
+            
+            if (nextX < 0) nextX = 0;
+
+            if (nextX >= Main.WIDTH) nextX = Main.WIDTH -1;
+            
+            if (nextY < 0) nextY = 0;
+            if (nextY >= Main.HEIGHT) nextY = Main.HEIGHT -1;
         }
         
+        // last moven spot
+        this.lastX = cx;
+        this.lastY = cy;
+        //set
         this.position.setLocation(nextX, nextY);
     }
 
