@@ -32,12 +32,13 @@ https://github.com/newdok23/Cyberpunk2000/tree/newbranch
 
 **1.2.** Describe your workflow. Did you use branches? Pull requests?
 
-
+Main quick/ bug fixing edits were made by pulling origin and pushing when done. Later on we used pull requests in seperate branches and merged once approved by everyone else.
 
 
 
 **1.3.** Estimate the percentage of commits you contributed relative to the total in your repository.
-
+15% to main
+100% to my branch
 
 
 
@@ -150,6 +151,10 @@ QueenDeadException: Thrown by Queen.java when her stamina depletes and caught by
 Don't forget to submit an electronic version of your logbook.
 
 **4.1.** Which week's activity taught you the most? What did you learn?
+Week 4 taught me the most as it made our team to move from abstract concepts into pracitcal Object-Oriented programming design.
+Planning class hierarchies and debating class responsibilities is often the most critical phase of software development.
+
+Specifically, deciding to elevate Ant to a superclass to hold shared state variables, like health and stamina, outlined how  practical value inheritance is in programming. Furthermore, debating with my team whether findResource() and pheromone mechanics belonged in a general Explore branch  inside the Scout subclass taught me a lot about  encapsulation. It helped me realize that a subclass should only possess the specific behaviors relevant to its exact role, preventing bloated classes and keeping the overall architecture clean
 
 ---
 
