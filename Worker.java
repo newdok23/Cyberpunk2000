@@ -124,6 +124,8 @@ class Worker extends Ant{
 
                     }
                 }
+
+              
     }
 
 }
@@ -146,6 +148,11 @@ public void returnToColony() {
 } 
 
  public void moveTowards(Point target) {
+
+    try { 
+        if (target == null){ 
+             throw new InvalidPositionException("Worker cannot move to a null position!" );
+        }
         
         int dx = Integer.compare(target.x , position.x);
         int dy = Integer.compare(target.y, position.y);
@@ -164,6 +171,9 @@ public void returnToColony() {
                     System.out.println("Worker picked up food! carryingFood = " +carryingFood);
                 }
             }
+        } catch (InvalidPositionException e) { System.out.println("Movement error: " + e.getMessage());
+      }
+            
     }
     
 
