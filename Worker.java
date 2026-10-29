@@ -13,6 +13,7 @@ class Worker extends Ant{
     boolean followingTrail;
     boolean carryingFood;
     int foodCarried;
+    private static final float REINFORCE_AMOUNT = 0.2f;
 
     /*The following refers to list of pheromones where strength is measured as a Float .
     So each pheromone in the trail has a position and a float strength value like 0.8f
@@ -138,6 +139,10 @@ public void returnToColony() {
     int newX = position.x + dx;
     int newY = position.y + dy;
     position = new Point(newX, newY);
+
+    if (Main.pheromoneGrid[newX][newY] != null ){ 
+        Main.pheromoneGrid[newX][newY].reinforce(REINFORCE_AMOUNT);
+    }
 
 
     if ( newX == colonyX && newY == colonyY) {
