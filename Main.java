@@ -121,6 +121,8 @@ public class Main {
             }
         }
     }
+
+   
 }
 
 
@@ -153,6 +155,16 @@ public class Main {
         }
     }
 
+
+    /* Food collection
+    
+    List <Int foodCollection
+        food.stream()
+        .m(food - > food.split(""))
+        .flatMap(Array::stream)
+        .distinct()
+        .collect(toList());
+        */
 
 
     static CellType[][] grid = new CellType[WIDTH][HEIGHT];
