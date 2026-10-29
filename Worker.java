@@ -158,6 +158,7 @@ public void returnToColony() {
         int dy = Integer.compare(target.y, position.y);
         int newX = position.x + dx;
         int newY = position.y + dy;
+
         
             if (newX >= 0 && newX < Main.WIDTH && newY >= 0 && newY < Main.HEIGHT) {
                 this.position = new Point(newX, newY);
