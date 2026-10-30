@@ -228,6 +228,19 @@ public class Main {
                
         }
 
+        // Need to draw pheromone trails as they are not visible
+
+        for (int x = 0; x < WIDTH; x++){
+            for (int y = 0; y < HEIGHT; y++){
+                if(pheromoneGrid[x][y] != null){
+                    float strength = pheromoneGrid[x][y].getStrength().floatValue();
+                    float alpha = Math.max(0f, Math.min(strength, 1f));
+                    g.setColor(new Color(1f, 1f, 1f, alpha));
+                    g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                }
+            }
+        }
+
         g.setColor(Color.GREEN);
             for (Scout scout : scouts) {
         Point p = scout.getPosition();
