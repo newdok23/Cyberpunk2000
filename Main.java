@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import javax.swing.*;
 
@@ -61,6 +63,7 @@ public class Main {
         for (Worker worker : workers) {
             Point p = worker.getPosition();
             System.out.println("Worker at: " + p.x + ", " + p.y);
+            System.out.println("Avg pheromone strength: "+ averagePheromoneStrength());
         }
     }
 
@@ -137,6 +140,18 @@ public class Main {
             }
         }
         return count;
+    }
+
+    static double averagePheromoneStrength() {
+        return Arrays.stream(pheromoneGrid)
+        .flatMap(Arrays::stream)
+        .filter(Objects::nonNull)
+        //lamba p -> something; where p is Pheromone<Float> 
+        // Turns each pheromone into a number 
+        .mapToDouble(p -> p.getStrength().doubleValue())
+        .average()
+        .orElse(0.0);
+
     }
     
 
