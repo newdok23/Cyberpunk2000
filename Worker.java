@@ -14,6 +14,7 @@ class Worker extends Ant{
     boolean carryingFood;
     int foodCarried;
     private static final float REINFORCE_AMOUNT = 0.2f;
+    private Random random = new Random();
 
     /*The following refers to list of pheromones where strength is measured as a Float .
     So each pheromone in the trail has a position and a float strength value like 0.8f
@@ -111,7 +112,7 @@ class Worker extends Ant{
        moveTowards(strongest.getPosition()); //use the method
        //when no pheromone trail is left nearby , workers should find another path randomly
     } else {
-        Random random = new Random();
+       
         int dx = random.nextInt(3) -1;
         int dy = random.nextInt(3) -1;
         int newX = position.x+dx;

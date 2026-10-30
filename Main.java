@@ -23,6 +23,7 @@ public class Main {
     static final int MAX_WORKERS = 5;
     static int workerSpawnTimer = 0;
     static final int WORKER_SPAWN_RATE = 40;
+    static final boolean DEBUG = true;
 
     static Queen queen;
     static List<Scout> scouts = new ArrayList<>();
@@ -53,13 +54,15 @@ public class Main {
                     pheromoneCount++;
             }
         }
-        System.out.println("Pheromones: " + pheromoneCount);
+        if (DEBUG) System.out.println("Pheromones: " + pheromoneCount);
 
         // debug for workers update
+        if (DEBUG) {
         for (Worker worker : workers) {
             Point p = worker.getPosition();
             System.out.println("Worker at: " + p.x + ", " + p.y);
         }
+    }
 
 
         scoutspawnTimer++;
