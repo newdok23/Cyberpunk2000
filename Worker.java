@@ -24,6 +24,8 @@ class Worker extends Ant{
     private final MovementStrategy followTrailStrategy = new FollowTrailStrategy();
     private final MovementStrategy returnToColonyStrategy = new ReturnToColonyStrategy();
     private MovementStrategy strategy = followTrailStrategy;
+    // Observer pattern 
+    private final List <FoodDeliveryListener> listeners = new ArrayList<>();
    
     
    
@@ -38,6 +40,10 @@ class Worker extends Ant{
 
     public void setStrategy(MovementStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public void addListener(FoodDeliveryListener listener) {
+        listeners.add(listener);
     }
 
     public void update() {
@@ -93,6 +99,8 @@ class Worker extends Ant{
         foodCarried = 0;
         setStrategy(followTrailStrategy);
         System.out.println("Worker delivered food to colony!");
+        //recorded for listnere
+        listeners.forEach(listener-> listener.onFoodDelivered(this));
     }
 
     //Connecting to the generics Pheromone<T>
