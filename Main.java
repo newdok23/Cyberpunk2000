@@ -26,6 +26,7 @@ public class Main {
     static int workerSpawnTimer = 0;
     static final int WORKER_SPAWN_RATE = 40;
     static final boolean DEBUG = true;
+    static int foodDelivered = 0;
 
     static Queen queen;
     static List<Scout> scouts = new ArrayList<>();
@@ -79,11 +80,11 @@ public class Main {
             }
         }
 
-        scoutspawnTimer++;
-        if(scoutspawnTimer >= WORKER_SPAWN_RATE && workers.size() < MAX_WORKERS) {
+        workerSpawnTimer++;
+        if(workerSpawnTimer >= WORKER_SPAWN_RATE && workers.size() < MAX_WORKERS) {
             Worker worker = queen.prodWorker();
             if (worker != null) {
-                workers.add(worker);
+                registerWorker(worker);
                 workerSpawnTimer = 0;
             }
         }
@@ -136,6 +137,11 @@ public class Main {
             }
         }
         return count;
+    }
+
+    static void registerWorker(Worker worker) {
+        workers.add(worker);
+        worker.addListener(w -> foodDelivered++);
     }
 
     static double averagePheromoneStrength() {
@@ -267,6 +273,9 @@ public class Main {
     g.fillRect(p.x * CELL_SIZE + 5, p.y *CELL_SIZE +5, CELL_SIZE -10, CELL_SIZE-10);
     }
 
+    g.setColor(Color.WHITE);
+    g.drawString("Food delivered: " + foodDelivered , 8, 16);
+
  }
  
  
@@ -293,8 +302,8 @@ public class Main {
     scouts.add(new Scout(100, 100));
     scouts.add(new Scout(100, 100));
 
-    workers.add(new Worker(100, 100));
-    workers.add(new Worker(100, 100));
+    registerWorker(new Worker(100, 100));
+    registerWorker(new Worker(100, 100));
 
  
 
