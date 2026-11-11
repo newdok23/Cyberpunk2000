@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 
@@ -112,18 +113,22 @@ public class Main {
     }
 
 
-    // Pheromone needs to decay otherwise ants keep going to same place
-
-    for(int x = 0; x < WIDTH ; x++) {
-        for(int y = 0; y < HEIGHT; y++) {
-            if(pheromoneGrid[x][y] != null){
-                pheromoneGrid[x][y].decay();
-                if(pheromoneGrid[x][y].getStrength().floatValue() < 0.01f){
-                    pheromoneGrid[x][y] = null;
-                }
+// Each column is independent in the decay 
+// this should allow it to run in parallel
+// I removed .parallel() since measured slower than a loop
+long start = System.nanoTime();
+IntStream.range(0,WIDTH).forEach(x -> {
+    for (int y = 0; y < HEIGHT; y++){
+        if (pheromoneGrid[x][y] != null){
+            pheromoneGrid[x][y].decay();
+            if(pheromoneGrid[x][y].getStrength().floatValue() < 0.01f){
+                pheromoneGrid[x][y] = null;
             }
         }
     }
+});
+if (DEBUG) System.out.println("Decay ms: " + (System.nanoTime() - start) / 1_000_000.0);
+
 
    
 }
